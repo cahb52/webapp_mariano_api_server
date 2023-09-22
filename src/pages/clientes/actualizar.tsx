@@ -31,7 +31,6 @@ interface Datos {
 
 const ActualizarServicio = () => {
   const router = useRouter()
-  verificarRol()
 
   //opciones globales
   const [openAlert, setOpenAlert] = useState<boolean>(false)

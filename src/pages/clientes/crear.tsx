@@ -31,8 +31,6 @@ interface Datos {
 
 const ActualizarServicio = () => {
   const router = useRouter()
-  verificarRol()
-
   const [openAlert, setOpenAlert] = useState<boolean>(false)
   const [mensaje, setMensaje] = useState('Dato Guardado')
 
@@ -89,6 +87,8 @@ const ActualizarServicio = () => {
       setOpenAlert(!openAlert)
       setMensaje('Dato Guardado')
       router.push('/clientes/ver?id=' + data.id_cliente)
+    } else if (data.message == 'errorauth') {
+      router.push('/pages/login')
     } else {
       setOpenAlert(!openAlert)
       setMensaje('Dato no pudo guardarse')

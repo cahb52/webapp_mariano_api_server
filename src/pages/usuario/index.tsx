@@ -48,7 +48,6 @@ const ServiciosSettings = () => {
     }
   })
   const router = useRouter()
-  verificarRol()
 
   const resultados = async () => {
     let miToken

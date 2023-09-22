@@ -2,7 +2,6 @@
 import { ReactNode } from 'react'
 
 // ** MUI Imports
-import Box from '@mui/material/Box'
 import { Theme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
@@ -18,6 +17,7 @@ import VerticalAppBarContent from './components/vertical/AppBarContent'
 
 // ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
+import verificarRol from 'src/verification/verificarrol'
 
 interface Props {
   children: ReactNode
@@ -26,6 +26,7 @@ interface Props {
 const UserLayout = ({ children }: Props) => {
   // ** Hooks
   const { settings, saveSettings } = useSettings()
+  verificarRol()
 
   /**
    *  The below variable will hide the current layout menu at given screen size.
@@ -37,7 +38,7 @@ const UserLayout = ({ children }: Props) => {
    */
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
 
-   return (
+  return (
     <VerticalLayout
       hidden={hidden}
       settings={settings}
@@ -55,7 +56,6 @@ const UserLayout = ({ children }: Props) => {
       )}
     >
       {children}
-      
     </VerticalLayout>
   )
 }
