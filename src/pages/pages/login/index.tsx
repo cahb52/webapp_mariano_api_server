@@ -56,7 +56,7 @@ const LoginPage = () => {
   // ** State
 
   const [estatus, setStatus] = useState(0)
-  const [sessionn, setSessionn] = useState(null)
+  const [sessionn, setSessionn] = useState()
   const [values, setValues] = useState<State>({
     password: '',
     showPassword: false,
@@ -95,6 +95,8 @@ const LoginPage = () => {
         console.log(data)
         setStatus(200)
         setSessionn(data.data)
+        localStorage.setItem('token', data.data.token)
+        localStorage.setItem('rol', data.data.rol)
       })
       .catch(error => {
         setStatus(403)
