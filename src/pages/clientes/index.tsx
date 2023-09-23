@@ -73,8 +73,6 @@ const ServiciosSettings = () => {
     longitud: ''
   })
 
-  verificarRol()
-
   const resultados = async () => {
     let miToken
     try {

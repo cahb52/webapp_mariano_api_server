@@ -14,6 +14,27 @@ import Close from 'mdi-material-ui/Close'
 import axios from 'axios'
 import themeConfig from 'src/configs/themeConfig'
 
+interface ServiciosD {
+  id_servicio: string
+  tipo_servicio: string
+  descripcion: string
+}
+
+interface DatosClientes {
+  id_cliente: string
+  primer_apellido: string
+  segundo_apellido: string
+  primer_nombre: string
+  segundo_nombre: string
+  entidad: string
+  direccion: string
+  telefono: string
+  nit: string
+  correo: string
+  latitud: string
+  longitud: string
+}
+
 interface Datos {
   id_visita: string
   id_cliente: string
@@ -40,26 +61,13 @@ interface Datos {
     descripcion: string
   }
 }
-const ActualizarServicio = () => {
-  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
-  const router = useRouter()
-  if (typeof window !== 'undefined') {
-    const role = localStorage.getItem('rol')
-    const isFound = acceso.some(element => {
-      if (element.rol === role) {
-        return true
-      }
-
-      return false
-    })
-    if (!isFound) {
-      return <>No autorizado</>
-    }
-  }
-
+const crearVisita = () => {
+  const [statusPersonal, setStatusPersonal] = useState('')
+  const [statusClientel, setStatusCliente] = useState('')
+  const [statusServicio, setStatusServicio] = useState('')
   const [openAlert, setOpenAlert] = useState<boolean>(false)
   const [mensaje, setMensaje] = useState('Dato Guardado')
-  const [respuesta, setRespuesta] = useState<Datos>({
+  const [respuesta, setRequest] = useState<Datos>({
     id_visita: '',
     id_cliente: '',
     id_servicio: '',
@@ -86,6 +94,45 @@ const ActualizarServicio = () => {
     }
   })
 
+  const [respuestaServicios, setRespuestaServicios] = useState<ServiciosD>({
+    id_servicio: '',
+    tipo_servicio: '',
+    descripcion: ''
+  })
+
+  const [respuestaCliente, setRespuestaCliente] = useState<DatosClientes>({
+    id_cliente: '',
+    primer_apellido: '',
+    segundo_apellido: '',
+    primer_nombre: '',
+    segundo_nombre: '',
+    entidad: '',
+    direccion: '',
+    telefono: '',
+    nit: '',
+    correo: '',
+    latitud: '',
+    longitud: ''
+  })
+
+  useEffect(() => {
+    console.log(status)
+  }, [])
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
+  const router = useRouter()
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
+  }
   const handleChange = (prop: keyof Datos) => (event: ChangeEvent<HTMLInputElement>) => {
     setRequest({ ...respuesta, [prop]: event.target.value })
   }
@@ -123,11 +170,6 @@ const ActualizarServicio = () => {
       setMensaje('Dato no pudo guardarse')
     }
   }
-
-  const { id } = router.query
-  useEffect(() => {
-    setRequest({ ...respuesta, ['id_users']: id })
-  }, [id])
 
   return (
     <Box>
@@ -282,4 +324,4 @@ const ActualizarServicio = () => {
   )
 }
 
-module.exports = ActualizarServicio
+module.exports = crearVisita
