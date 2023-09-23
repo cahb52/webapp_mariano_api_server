@@ -89,6 +89,7 @@ const LoginPage = () => {
       //console.log(data.token);
       router.push('/')
     } else {
+      console.log('existe un error ')
     }
   }
   if (typeof window !== 'undefined') {
