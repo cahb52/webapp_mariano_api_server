@@ -10,20 +10,37 @@ import themeConfig from 'src/configs/themeConfig'
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
 import verificarRol from '../../verification/verificarrol'
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Box, Button } from '@mui/material'
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Box, Button, Link } from '@mui/material'
 import axios from 'axios'
 
 interface Datos {
+  id_visita: string
+  id_cliente: string
+  id_servicio: string
   id_personal: string
-  primer_apellido: string
-  segundo_apellido: string
-  primer_nombre: string
-  segundo_nombre: string
-  cui: string
-  fecha_nacimiento: string
-  direccion: string
-  telefono: string
-  id_users: string
+  fecha: string
+  hora_visita: string
+  estado: string
+  observaciones: string
+  personal: {
+    primer_apellido: string
+    segundo_apellido: string
+    primer_nombre: string
+    segundo_nombre: string
+  }
+  cliente: {
+    primer_apellido: string
+    segundo_apellido: string
+    primer_nombre: string
+    segundo_nombre: string
+    direccion: string
+    latitud: string
+    longitud: string
+  }
+  servicio: {
+    tipo_servicio: string
+    descripcion: string
+  }
 }
 
 const verUsuario = () => {
@@ -45,21 +62,41 @@ const verUsuario = () => {
   }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [estado, setEstado] = useState(false)
   const [respuesta, setRespuesta] = useState<Datos>({
+    id_visita: '',
+    id_cliente: '',
+    id_servicio: '',
     id_personal: '',
-    primer_apellido: '',
-    segundo_apellido: '',
-    primer_nombre: '',
-    segundo_nombre: '',
-    cui: '',
-    fecha_nacimiento: '',
-    direccion: '',
-    telefono: '',
-    id_users: ''
+    fecha: '',
+    hora_visita: '',
+    estado: '',
+    observaciones: '',
+    personal: {
+      primer_apellido: '',
+      segundo_apellido: '',
+      primer_nombre: '',
+      segundo_nombre: ''
+    },
+    servicio: {
+      tipo_servicio: '',
+      descripcion: ''
+    },
+    cliente: {
+      primer_apellido: '',
+      segundo_apellido: '',
+      primer_nombre: '',
+      segundo_nombre: '',
+      direccion: '',
+      longitud: '',
+      latitud: ''
+    }
   })
 
   const { id } = router.query
-  const resultados = async (id: any) => {
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
     let miToken
     try {
       miToken = localStorage.getItem('token') || ''
@@ -68,7 +105,7 @@ const verUsuario = () => {
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: themeConfig.serverApi + '/api/personal/ver/' + id,
+      url: themeConfig.serverApi + '/api/visitas/ver/' + id,
       headers: {
         Authorization: 'Bearer ' + miToken
       }
@@ -76,73 +113,81 @@ const verUsuario = () => {
     axios
       .request(config)
       .then((response: any) => {
-        const respu = response.data
-        setRespuesta(respu)
+        setRespuesta(response.data)
+        setEstado(true)
+        console.log(response.data)
 
         // console.log('soy el rspu')
         // console.log(respu)
-
-        return respu
       })
       .catch((error: any) => {
         console.log(error)
+        setEstado(false)
       })
+  }, [id])
+  console.log(respuesta)
+  if (estado) {
+    return (
+      <Box>
+        <TableContainer>
+          <TableContainer sx={{ minWidth: 650 }} aria-label='simple table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell align='right'>Cliente</TableCell>
+                <TableCell align='right'>Servicio</TableCell>
+                <TableCell align='right'>Personal</TableCell>
+                <TableCell align='right'>Fecha</TableCell>
+                <TableCell align='right'>Hora</TableCell>
+                <TableCell align='right'>Dirección</TableCell>
+                <TableCell align='right'>Estado</TableCell>
+                <TableCell align='right'>Observaciones</TableCell>
+                <TableCell align='right'>Longitud</TableCell>
+                <TableCell align='right'>Latitud</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow sx={{ '&:last-of-type  td, &:last-of-type  th': { border: 0 } }}>
+                <TableCell component='th' scope='row'>
+                  <Link href={'/visitas/ver?id=' + respuesta.id_visita} underline='none'>
+                    {respuesta.id_visita}
+                  </Link>
+                </TableCell>
+                <TableCell align='right'>
+                  {respuesta.cliente.primer_apellido +
+                    ' ' +
+                    respuesta.cliente.segundo_apellido +
+                    ' ' +
+                    respuesta.cliente.primer_nombre +
+                    ' ' +
+                    respuesta.cliente.segundo_nombre}
+                </TableCell>
+                <TableCell align='right'>{respuesta.servicio.tipo_servicio}</TableCell>
+                <TableCell align='right'>
+                  {respuesta.personal.primer_apellido +
+                    ' ' +
+                    respuesta.personal.segundo_apellido +
+                    ' ' +
+                    respuesta.personal.primer_nombre +
+                    ' ' +
+                    respuesta.personal.segundo_nombre}
+                </TableCell>
+                <TableCell align='right'>{respuesta.fecha}</TableCell>
+                <TableCell align='right'>{respuesta.hora_visita}</TableCell>
+                <TableCell align='right'>{respuesta.cliente.direccion}</TableCell>
+                <TableCell align='right'>{respuesta.estado}</TableCell>
+                <TableCell align='right'>{respuesta.observaciones}</TableCell>
+                <TableCell align='right'>{respuesta.cliente.longitud}</TableCell>
+                <TableCell align='right'>{respuesta.cliente.latitud}</TableCell>
+              </TableRow>
+            </TableBody>
+          </TableContainer>
+        </TableContainer>
+      </Box>
+    )
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    resultados(id)
-  }, [id])
-
-  // console.log(respuesta)
-  // const resp = Object.entries(respuesta)
-  // console.log(resp)
-
-  //console.log('soy el rol ')
-  //console.log(respuesta)
-
-  return (
-    <Box>
-      <TableContainer>
-        <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell align='right'>Primer Apellido</TableCell>
-              <TableCell align='right'>Segundo Apellido</TableCell>
-              <TableCell align='right'>Primer Nombre</TableCell>
-              <TableCell align='right'>Segundo Nombre</TableCell>
-              <TableCell align='right'>CUI/DPI</TableCell>
-              <TableCell align='right'>Dirección</TableCell>
-              <TableCell align='right'>Fecha de Nacimiento</TableCell>
-              <TableCell align='right'>Teléfono</TableCell>
-              <TableCell align='right'>Usuario</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow sx={{ '&:last-of-type  td, &:last-of-type  th': { border: 0 } }}>
-              <TableCell>{respuesta.id_personal}</TableCell>
-              <TableCell align='right'>{respuesta.primer_apellido}</TableCell>
-              <TableCell align='right'>{respuesta.segundo_apellido}</TableCell>
-              <TableCell align='right'>{respuesta.primer_nombre}</TableCell>
-              <TableCell align='right'>{respuesta.segundo_nombre}</TableCell>
-              <TableCell align='right'>{respuesta.cui}</TableCell>
-              <TableCell align='right'>{respuesta.direccion}</TableCell>
-              <TableCell align='right'>{respuesta.fecha_nacimiento}</TableCell>
-              <TableCell align='right'>{respuesta.telefono}</TableCell>
-              <TableCell align='right'>
-                {
-                  <Button onClick={() => router.push('/usuario/ver?id=' + respuesta.id_users)}>
-                    Ver Usuario Asignado
-                  </Button>
-                }
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
-  )
+  return <h1>Cargando</h1>
 }
 
 export default verUsuario

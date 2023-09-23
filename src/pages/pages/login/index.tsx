@@ -97,23 +97,12 @@ const LoginPage = () => {
         setSessionn(data.data)
         localStorage.setItem('token', data.data.token)
         localStorage.setItem('rol', data.data.rol)
+        router.push('/')
       })
       .catch(error => {
         setStatus(403)
         console.log(error)
       })
-
-    if (estatus === 200) {
-      if (sessionn.token) {
-        localStorage.setItem('token', sessionn.token)
-        localStorage.setItem('rol', sessionn.rol)
-
-        //console.log(data.token);
-        //router.push('/')
-      } else {
-        console.log('existe un error ')
-      }
-    }
   }
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('token')

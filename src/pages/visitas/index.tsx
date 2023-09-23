@@ -162,8 +162,8 @@ const ServiciosSettings = () => {
                 {rows?.map((row, index) => (
                   <TableRow key={index} sx={{ '&:last-of-type  td, &:last-of-type  th': { border: 0 } }}>
                     <TableCell component='th' scope='row'>
-                      <Link href={'/perfiles/ver?id=' + row.id_personal} underline='none'>
-                        {row.id_personal}
+                      <Link href={'/visitas/ver?id=' + row.id_visita} underline='none'>
+                        {row.id_visita}
                       </Link>
                     </TableCell>
                     <TableCell align='right'>

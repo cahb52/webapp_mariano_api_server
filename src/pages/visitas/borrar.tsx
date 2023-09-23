@@ -49,7 +49,7 @@ const verServicio = () => {
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: themeConfig.serverApi + '/api/personal/eliminar/' + id,
+      url: themeConfig.serverApi + '/api/visitas/eliminar/' + id,
       headers: {
         Authorization: 'Bearer ' + miToken
       }
@@ -60,7 +60,7 @@ const verServicio = () => {
         const respu = response.data
         setRespuesta(respu)
         if (respu.message == 'ok') {
-          router.push('/perfiles/')
+          router.push('/visitas/')
         }
 
         //console.log(respuesta);
