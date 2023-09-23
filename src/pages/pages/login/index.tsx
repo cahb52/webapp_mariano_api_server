@@ -94,7 +94,7 @@ const LoginPage = () => {
       .then(data => {
         console.log(data)
         setStatus(200)
-        setSessionn(data)
+        setSessionn(data.data)
       })
       .catch(error => {
         setStatus(403)
@@ -102,12 +102,12 @@ const LoginPage = () => {
       })
 
     if (estatus === 200) {
-      if (sessionn.data.token) {
-        localStorage.setItem('token', sessionn.data.token)
-        localStorage.setItem('rol', sessionn.data.rol)
+      if (sessionn.token) {
+        localStorage.setItem('token', sessionn.token)
+        localStorage.setItem('rol', sessionn.rol)
 
         //console.log(data.token);
-        router.push('/')
+        //router.push('/')
       } else {
         console.log('existe un error ')
       }
