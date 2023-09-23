@@ -72,7 +72,7 @@ const LoginPage = () => {
 
   const getLogin = async (event: MouseEvent) => {
     event.preventDefault()
-    const { data } = await axios.post(
+    const { data, status } = await axios.post(
       themeConfig.serverApi + '/api/login',
       { username: values.username, password: values.password },
       {
@@ -82,6 +82,7 @@ const LoginPage = () => {
         }
       }
     )
+    if(status===200){
     if (data.token) {
       localStorage.setItem('token', data.token)
       localStorage.setItem('rol', data.rol)
@@ -91,6 +92,8 @@ const LoginPage = () => {
     } else {
       console.log('existe un error ')
     }
+  } else {
+    console.log("estado no cambia a ok")
   }
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('token')
