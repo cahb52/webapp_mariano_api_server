@@ -92,6 +92,7 @@ const ActualizarServicio = () => {
         console.log(error)
       })
   }
+
   useEffect(() => {
     resultados(id)
   }, [id])
