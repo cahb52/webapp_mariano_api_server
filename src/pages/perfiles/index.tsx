@@ -18,11 +18,10 @@ import {
   Grid,
   Button
 } from '@mui/material'
-import verificarRol from 'src/verification/verificarrol'
-import themeConfig from 'src/configs/themeConfig'
 import axios from 'axios'
 import { Delete, Update } from 'mdi-material-ui'
 import { useRouter } from 'next/router'
+import themeConfig from 'src/configs/themeConfig'
 
 interface Datos {
   id_personal: string
@@ -37,6 +36,7 @@ interface Datos {
   id_users: string
 }
 const ServiciosSettings = () => {
+  const [status, setStatus] = useState('')
   const [respuesta, setRespuesta] = useState<Datos>({
     id_personal: '',
     primer_apellido: '',
@@ -49,10 +49,11 @@ const ServiciosSettings = () => {
     telefono: '',
     id_users: ''
   })
-  const router = useRouter()
-  verificarRol()
 
-  const resultados = async () => {
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
+  const router = useRouter()
+
+  useEffect(() => {
     let miToken
     try {
       miToken = localStorage.getItem('token') || ''
@@ -69,21 +70,30 @@ const ServiciosSettings = () => {
     axios
       .request(config)
       .then((response: any) => {
-        const respu = response.data
-        setRespuesta(respu)
+        setRespuesta(response.data)
+        setStatus('success')
 
         // console.log('soy respu ')
         console.log(response.data)
-
-        return respu
       })
       .catch((error: any) => {
         console.log(error)
       })
-  }
-  useEffect(() => {
-    resultados()
   }, [])
+
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
+  }
 
   // console.log('soy la respuesta')
   // console.log(respuesta)
@@ -92,6 +102,9 @@ const ServiciosSettings = () => {
     rows = Object.values(respuesta)
   } catch (error) {
     rows = []
+  }
+  if (status !== 'success') {
+    return <h1>Cargando</h1>
   }
 
   return (

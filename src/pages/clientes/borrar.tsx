@@ -11,7 +11,6 @@ import themeConfig from 'src/configs/themeConfig'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
-import verificarRol from '../../verification/verificarrol'
 
 import axios from 'axios'
 
@@ -19,9 +18,25 @@ interface Datos {
   message: string
   type: string
 }
-const verServicio = () => {
+const borrarCliente = () => {
+  //determinamos los permisos de acceso
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
   const router = useRouter()
-  verificarRol()
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
+  }
+
+  //terminamos de definir los permisos de acceso
 
   const [respuesta, setRespuesta] = useState<Datos>({
     message: '',
@@ -70,4 +85,4 @@ const verServicio = () => {
   return <Box>{respuesta.type}</Box>
 }
 
-export default verServicio
+export default borrarCliente

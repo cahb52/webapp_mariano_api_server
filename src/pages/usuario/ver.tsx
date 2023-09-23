@@ -9,7 +9,7 @@ import themeConfig from 'src/configs/themeConfig'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
-import verificarRol from '../../verification/verificarrol'
+
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Box } from '@mui/material'
 import axios from 'axios'
 
@@ -25,12 +25,7 @@ interface Datos {
   }
 }
 const verUsuario = () => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const router = useRouter()
-  verificarRol()
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [respuesta, setRespuesta] = useState<Datos>({
+  const [respuestaDatos, setRespuesta] = useState<Datos>({
     id_users: '',
     id_rol: '',
     users: '',
@@ -41,9 +36,9 @@ const verUsuario = () => {
       rol: ''
     }
   })
-
+  const router = useRouter()
   const { id } = router.query
-  const resultados = async (id: any) => {
+  const resultaDos = async (id: any) => {
     let miToken
     try {
       miToken = localStorage.getItem('token') || ''
@@ -63,9 +58,6 @@ const verUsuario = () => {
         const respu = response.data
         setRespuesta(respu)
 
-        // console.log('soy el rspu')
-        // console.log(respu)
-
         return respu
       })
       .catch((error: any) => {
@@ -74,18 +66,27 @@ const verUsuario = () => {
   }
 
   useEffect(() => {
-    resultados(id)
+    resultaDos(id)
   }, [id])
 
-  // console.log(respuesta)
-  // const resp = Object.entries(respuesta)
-  // console.log(resp)
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
 
-  //console.log('soy el rol ')
-  //console.log(respuesta)
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
+  }
+
   let roless: any = []
   try {
-    roless = Object.values(respuesta.role)
+    roless = Object.values(respuestaDatos.role)
 
     //console.log(roless)
   } catch (error) {}
@@ -106,13 +107,13 @@ const verUsuario = () => {
           </TableHead>
           <TableBody>
             <TableRow sx={{ '&:last-of-type  td, &:last-of-type  th': { border: 0 } }}>
-              <TableCell>{respuesta.id_rol}</TableCell>
+              <TableCell>{respuestaDatos.id_rol}</TableCell>
               <TableCell align='right'>{roless[1]}</TableCell>
-              <TableCell align='right'>{respuesta.users}</TableCell>
+              <TableCell align='right'>{respuestaDatos.users}</TableCell>
 
-              <TableCell align='right'>{respuesta.estado}</TableCell>
-              <TableCell align='right'>{respuesta.createdAt}</TableCell>
-              <TableCell align='right'>{respuesta.updatedAt}</TableCell>
+              <TableCell align='right'>{respuestaDatos.estado}</TableCell>
+              <TableCell align='right'>{respuestaDatos.createdAt}</TableCell>
+              <TableCell align='right'>{respuestaDatos.updatedAt}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

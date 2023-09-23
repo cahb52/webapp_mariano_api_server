@@ -8,7 +8,6 @@ import Card from '@mui/material/Card'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
-import verificarRol from '../../verification/verificarrol'
 import { Alert, AlertTitle, Button, CardContent, Grid, IconButton, TextField } from '@mui/material'
 import Close from 'mdi-material-ui/Close'
 import axios from 'axios'
@@ -28,22 +27,6 @@ interface Datos {
 }
 
 const ActualizarServicio = () => {
-  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
-  const router = useRouter()
-  if (typeof window !== 'undefined') {
-    const role = localStorage.getItem('rol')
-    const isFound = acceso.some(element => {
-      if (element.rol === role) {
-        return true
-      }
-
-      return false
-    })
-    if (!isFound) {
-      return <>No autorizado</>
-    }
-  }
-
   //opciones globales
   const [openAlert, setOpenAlert] = useState<boolean>(false)
   const [mensaje, setMensaje] = useState('Dato Guardado')
@@ -60,6 +43,21 @@ const ActualizarServicio = () => {
     id_users: ''
   })
 
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
+  const router = useRouter()
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
+  }
   const handleChange = (prop: keyof Datos) => (event: ChangeEvent<HTMLInputElement>) => {
     setRequest({ ...respuesta, [prop]: event.target.value })
   }

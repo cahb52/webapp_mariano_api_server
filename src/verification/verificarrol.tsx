@@ -21,11 +21,13 @@ const verificarRol = async () => {
     await axios
       .request(config)
       .then(response => {
-        console.log(JSON.stringify(response.data))
+        return response
+
+        //console.log(JSON.stringify(response.data))
       })
       .catch(error => {
         console.log(error)
-        router.push('/page/login')
+        router.push('/pages/login')
       })
   } else {
   }

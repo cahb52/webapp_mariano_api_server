@@ -8,7 +8,7 @@ import Card from '@mui/material/Card'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
-import verificarRol from '../../verification/verificarrol'
+
 import { Alert, AlertTitle, Button, CardContent, FormControl, Grid, IconButton, TextField } from '@mui/material'
 import Close from 'mdi-material-ui/Close'
 import axios from 'axios'
@@ -23,9 +23,6 @@ interface Datos {
 }
 
 const ActualizarServicio = () => {
-  const router = useRouter()
-  verificarRol()
-
   //opciones globales
   const [openAlert, setOpenAlert] = useState<boolean>(false)
   const [mensaje, setMensaje] = useState('Dato Guardado')
@@ -35,12 +32,7 @@ const ActualizarServicio = () => {
     estado: '',
     password: ''
   })
-
-  const handleChange = (prop: keyof Datos) => (event: ChangeEvent<HTMLInputElement>) => {
-    setRequest({ ...respuesta, [prop]: event.target.value })
-  }
-
-  //traemos los datos para actualizar
+  const router = useRouter()
   const { id } = router.query
   const resultados = async (id: any) => {
     let miToken
@@ -62,20 +54,39 @@ const ActualizarServicio = () => {
         const respu = response.data
         setRequest(respu)
 
-        //console.log(respu)
-
         return respu
       })
       .catch((error: any) => {
         console.log(error)
       })
   }
+
   useEffect(() => {
     resultados(id)
   }, [id])
   useEffect(() => {
     setRequest(respuesta)
   }, [respuesta])
+
+  const acceso = [{ rol: 'admin' }]
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
+  }
+  const handleChange = (prop: keyof Datos) => (event: ChangeEvent<HTMLInputElement>) => {
+    setRequest({ ...respuesta, [prop]: event.target.value })
+  }
+
+  //traemos los datos para actualizar
 
   //guardamos los datos
   const guardarDatos = async (e: MouseEvent) => {
@@ -121,7 +132,10 @@ const ActualizarServicio = () => {
               <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
                 <Grid item xs={12} sx={{ marginBottom: 4.8 }}>
                   <FormControl fullWidth>
-                    <Select options={optionroles} onChange={e => setRequest({ ...respuesta, ['id_rol']: e?.value })} />
+                    <Select
+                      options={optionroles}
+                      onChange={e => setRequest({ ...respuesta, ['id_rol']: e?.value || '' })}
+                    />
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sx={{ marginBottom: 4.8 }}>

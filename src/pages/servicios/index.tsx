@@ -31,8 +31,21 @@ interface Datos {
   descripcion: string
 }
 const ServiciosSettings = () => {
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
   const router = useRouter()
-  verificarRol()
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
+  }
 
   const [respuesta, setRespuesta] = useState<Datos>({
     id_servicio: '',

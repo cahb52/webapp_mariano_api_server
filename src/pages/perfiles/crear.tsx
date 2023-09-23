@@ -28,8 +28,21 @@ interface Datos {
 }
 
 const ActualizarServicio = () => {
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
   const router = useRouter()
-  verificarRol()
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
+  }
 
   const [openAlert, setOpenAlert] = useState<boolean>(false)
   const [mensaje, setMensaje] = useState('Dato Guardado')

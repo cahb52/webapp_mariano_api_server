@@ -29,8 +29,24 @@ interface Datos {
 }
 const verUsuario = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
+  //determinamos los permisos de acceso
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }, { rol: 'tecnico' }]
   const router = useRouter()
-  verificarRol()
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      router.push('/pages/login')
+    }
+  }
+
+  //terminamos de definir los permisos de acceso
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [respuesta, setRespuesta] = useState<Datos>({

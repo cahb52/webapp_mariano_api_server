@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, ChangeEvent } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 // ** MUI Imports
@@ -15,18 +15,31 @@ import axios from 'axios'
 import themeConfig from 'src/configs/themeConfig'
 
 interface Datos {
+  id_visita: string
+  id_cliente: string
+  id_servicio: string
   id_personal: string
-  primer_apellido: string
-  segundo_apellido: string
-  primer_nombre: string
-  segundo_nombre: string
-  cui: string
-  fecha_nacimiento: string
-  direccion: string
-  telefono: string
-  id_users: string
+  fecha: string
+  hora_visita: string
+  estado: string
+  observaciones: string
+  personal: {
+    primer_apellido: string
+    segundo_apellido: string
+    primer_nombre: string
+    segundo_nombre: string
+  }
+  cliente: {
+    primer_apellido: string
+    segundo_apellido: string
+    primer_nombre: string
+    segundo_nombre: string
+  }
+  servicio: {
+    tipo_servicio: string
+    descripcion: string
+  }
 }
-
 const ActualizarServicio = () => {
   const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
   const router = useRouter()
@@ -44,64 +57,38 @@ const ActualizarServicio = () => {
     }
   }
 
-  //opciones globales
   const [openAlert, setOpenAlert] = useState<boolean>(false)
   const [mensaje, setMensaje] = useState('Dato Guardado')
-  const [respuesta, setRequest] = useState<Datos>({
+  const [respuesta, setRespuesta] = useState<Datos>({
+    id_visita: '',
+    id_cliente: '',
+    id_servicio: '',
     id_personal: '',
-    primer_apellido: '',
-    segundo_apellido: '',
-    primer_nombre: '',
-    segundo_nombre: '',
-    cui: '',
-    fecha_nacimiento: '',
-    direccion: '',
-    telefono: '',
-    id_users: ''
+    fecha: '',
+    hora_visita: '',
+    estado: '',
+    observaciones: '',
+    personal: {
+      primer_apellido: '',
+      segundo_apellido: '',
+      primer_nombre: '',
+      segundo_nombre: ''
+    },
+    servicio: {
+      tipo_servicio: '',
+      descripcion: ''
+    },
+    cliente: {
+      primer_apellido: '',
+      segundo_apellido: '',
+      primer_nombre: '',
+      segundo_nombre: ''
+    }
   })
 
   const handleChange = (prop: keyof Datos) => (event: ChangeEvent<HTMLInputElement>) => {
     setRequest({ ...respuesta, [prop]: event.target.value })
   }
-
-  //traemos los datos para actualizar
-  const { id } = router.query
-  const resultados = async (id: any) => {
-    let miToken
-    try {
-      miToken = localStorage.getItem('token') || ''
-    } catch (error) {}
-
-    const config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: themeConfig.serverApi + '/api/personal/ver/' + id,
-      headers: {
-        Authorization: 'Bearer ' + miToken
-      }
-    }
-    axios
-      .request(config)
-      .then((response: any) => {
-        const respu = response.data
-        setRequest(respu)
-
-        //console.log(respu)
-
-        return respu
-      })
-      .catch((error: any) => {
-        console.log(error)
-      })
-  }
-  useEffect(() => {
-    resultados(id)
-  }, [id])
-  useEffect(() => {
-    setRequest(respuesta)
-  }, [respuesta])
-
-  //guardamos los datos
   const guardarDatos = async (e: MouseEvent) => {
     e.preventDefault()
     let miToken = ''
@@ -109,18 +96,14 @@ const ActualizarServicio = () => {
       miToken = localStorage.getItem('token') || ''
     } catch (error) {}
     const { data } = await axios.post(
-      themeConfig.serverApi + '/api/personal/actualizar/' + id,
+      themeConfig.serverApi + '/api/personal/crear',
       {
+        id_cliente: respuesta.id_cliente,
         id_personal: respuesta.id_personal,
-        primer_apellido: respuesta.primer_apellido,
-        segundo_apellido: respuesta.segundo_apellido,
-        primer_nombre: respuesta.primer_nombre,
-        segundo_nombre: respuesta.segundo_nombre,
-        cui: respuesta.cui,
-        fecha_nacimiento: respuesta.fecha_nacimiento,
-        direccion: respuesta.direccion,
-        telefono: respuesta.telefono,
-        id_users: respuesta.id_users
+        fecha: respuesta.fecha,
+        hora_visita: respuesta.hora_visita,
+        estado: respuesta.estado,
+        observaciones: respuesta.observaciones
       },
       {
         headers: {
@@ -130,17 +113,21 @@ const ActualizarServicio = () => {
         }
       }
     )
-
     console.log(data)
     if (data.message === 'ok') {
       setOpenAlert(!openAlert)
       setMensaje('Dato Guardado')
-      router.push('/perfiles/ver?id=' + id)
+      router.push('/perfiles/ver?id=' + data.id_personal)
     } else {
       setOpenAlert(!openAlert)
       setMensaje('Dato no pudo guardarse')
     }
   }
+
+  const { id } = router.query
+  useEffect(() => {
+    setRequest({ ...respuesta, ['id_users']: id })
+  }, [id])
 
   return (
     <Box>
@@ -260,7 +247,6 @@ const ActualizarServicio = () => {
                     onChange={handleChange('telefono')}
                   />
                 </Grid>
-
                 {openAlert ? (
                   <Grid item xs={12} sx={{ mb: 3 }}>
                     <Alert

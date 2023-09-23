@@ -14,11 +14,10 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  Link,
   Grid,
-  Button
+  Button,
+  Link
 } from '@mui/material'
-import verificarRol from 'src/verification/verificarrol'
 import themeConfig from 'src/configs/themeConfig'
 import axios from 'axios'
 import { Delete, FaceManProfile, Update } from 'mdi-material-ui'
@@ -47,7 +46,6 @@ const ServiciosSettings = () => {
       rol: ''
     }
   })
-  const router = useRouter()
 
   const resultados = async () => {
     let miToken
@@ -69,9 +67,6 @@ const ServiciosSettings = () => {
         const respu = response.data
         setRespuesta(respu)
 
-        // console.log('soy respu ')
-        // console.log(response.data)
-
         return respu
       })
       .catch((error: any) => {
@@ -81,6 +76,22 @@ const ServiciosSettings = () => {
   useEffect(() => {
     resultados()
   }, [])
+
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
+  const router = useRouter()
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
+  }
 
   // console.log('soy la respuesta')
   // console.log(respuesta)
@@ -124,17 +135,17 @@ const ServiciosSettings = () => {
                   <TableCell align='right'>{row.estado}</TableCell>
                   <TableCell align='right'>
                     <Grid item xs={4}>
-                      <Link href={'/usuario/borrar?id=' + row.id_users} underline='none' alt='Eliminar'>
+                      <Link href={'/usuario/eliminar?id=' + row.id_users} underline='none'>
                         <Delete />
                       </Link>
                     </Grid>
                     <Grid item xs={4}>
-                      <Link href={'/usuario/actualizar?id=' + row.id_users} underline='none' alt='Actualizar'>
+                      <Link href={'/usuario/actualizar?id=' + row.id_users} underline='none'>
                         <Update />
                       </Link>
                     </Grid>
                     <Grid item xs={4}>
-                      <Link href={'/perfiles/crear?id=' + row.id_users} underline='none' alt='Crear Perfil'>
+                      <Link href={'/perfiles/crear?id=' + row?.id_users} underline='none'>
                         <FaceManProfile />
                       </Link>
                     </Grid>

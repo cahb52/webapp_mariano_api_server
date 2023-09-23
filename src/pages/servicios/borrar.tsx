@@ -1,4 +1,5 @@
 'use client'
+
 // ** React Imports
 import { SyntheticEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -11,31 +12,29 @@ import themeConfig from 'src/configs/themeConfig'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
-import verificarRol from '../../verification/verificarrol'
-import {
-  CardContent,
-  Grid,
-  TextField,
-  Button,
-  Alert,
-  IconButton,
-  AlertTitle,
-  Link,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody
-} from '@mui/material'
+
 import axios from 'axios'
+
 interface Datos {
   message: string
   type: string
 }
 const verServicio = () => {
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
   const router = useRouter()
-  verificarRol()
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
+  }
 
   const [respuesta, setRespuesta] = useState<Datos>({
     message: '',
@@ -48,7 +47,7 @@ const verServicio = () => {
       miToken = localStorage.getItem('token') || ''
     } catch (error) {}
 
-    let config = {
+    const config = {
       method: 'get',
       maxBodyLength: Infinity,
       url: themeConfig.serverApi + '/api/servicios/eliminar/' + id,
@@ -59,11 +58,12 @@ const verServicio = () => {
     axios
       .request(config)
       .then((response: any) => {
-        let respu = response.data
+        const respu = response.data
         setRespuesta(respu)
         if (respu.message == 'ok') {
           router.push('/servicios/')
         }
+
         //console.log(respuesta);
         return respu
       })
