@@ -82,18 +82,17 @@ const LoginPage = () => {
         }
       }
     )
-    if(status===200){
-    if (data.token) {
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('rol', data.rol)
+    if (status === 200) {
+      if (data.token) {
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('rol', data.rol)
 
-      //console.log(data.token);
-      router.push('/')
-    } else {
-      console.log('existe un error ')
+        //console.log(data.token);
+        router.push('/')
+      } else {
+        console.log('existe un error ')
+      }
     }
-  } else {
-    console.log("estado no cambia a ok")
   }
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('token')
