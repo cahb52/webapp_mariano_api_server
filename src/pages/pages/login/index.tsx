@@ -41,6 +41,11 @@ interface State {
   showPassword: boolean
   username: string
 }
+interface sessionlogin {
+  token: string
+  ok: boolean
+  rol: string
+}
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
@@ -49,6 +54,9 @@ const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
 
 const LoginPage = () => {
   // ** State
+
+  const [estatus, setStatus] = useState(0)
+  const [sessionn, setSessionn] = useState(null)
   const [values, setValues] = useState<State>({
     password: '',
     showPassword: false,
@@ -72,20 +80,31 @@ const LoginPage = () => {
 
   const getLogin = async (event: MouseEvent) => {
     event.preventDefault()
-    const { data, status } = await axios.post(
-      themeConfig.serverApi + '/api/login',
-      { username: values.username, password: values.password },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json'
+    axios
+      .post(
+        themeConfig.serverApi + '/api/login',
+        { username: values.username, password: values.password },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          }
         }
-      }
-    )
-    if (status === 200) {
-      if (data.token) {
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('rol', data.rol)
+      )
+      .then(data => {
+        console.log(data)
+        setStatus(200)
+        setSessionn(data)
+      })
+      .catch(error => {
+        setStatus(403)
+        console.log(error)
+      })
+
+    if (estatus === 200) {
+      if (sessionn.data.token) {
+        localStorage.setItem('token', sessionn.data.token)
+        localStorage.setItem('rol', sessionn.data.rol)
 
         //console.log(data.token);
         router.push('/')
