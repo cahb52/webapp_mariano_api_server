@@ -27,21 +27,7 @@ interface Datos {
 }
 
 const ActualizarServicio = () => {
-  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
   const router = useRouter()
-  if (typeof window !== 'undefined') {
-    const role = localStorage.getItem('rol')
-    const isFound = acceso.some(element => {
-      if (element.rol === role) {
-        return true
-      }
-
-      return false
-    })
-    if (!isFound) {
-      return <>No autorizado</>
-    }
-  }
 
   const [openAlert, setOpenAlert] = useState<boolean>(false)
   const [mensaje, setMensaje] = useState('Dato Guardado')
@@ -61,6 +47,22 @@ const ActualizarServicio = () => {
 
   const handleChange = (prop: keyof Datos) => (event: ChangeEvent<HTMLInputElement>) => {
     setRequest({ ...respuesta, [prop]: event.target.value })
+  }
+
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
   }
 
   const { id } = router.query

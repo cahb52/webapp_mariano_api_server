@@ -25,7 +25,7 @@ interface Datos {
   id_users: string
 }
 
-const verUsuario = () => {
+const VerPerfil = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
   const router = useRouter()
@@ -144,4 +144,4 @@ const verUsuario = () => {
   )
 }
 
-export default verUsuario
+export default VerPerfil

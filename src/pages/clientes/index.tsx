@@ -39,25 +39,7 @@ interface Datos {
   longitud: string
 }
 const ServiciosSettings = () => {
-  //determinamos los permisos de acceso
-  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }, { rol: 'tecnico' }]
   const router = useRouter()
-  if (typeof window !== 'undefined') {
-    const role = localStorage.getItem('rol')
-    const isFound = acceso.some(element => {
-      if (element.rol === role) {
-        return true
-      }
-
-      return false
-    })
-    if (!isFound) {
-      return <>No autorizado</>
-    }
-  }
-
-  //terminamos de definir los permisos de acceso
-
   const [respuesta, setRespuesta] = useState<Datos>({
     id_cliente: '',
     primer_apellido: '',
@@ -105,6 +87,23 @@ const ServiciosSettings = () => {
   useEffect(() => {
     resultados()
   }, [])
+
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }, { rol: 'tecnico' }]
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
+  }
+
+  //terminamos de definir los permisos de acceso
 
   // console.log('soy la respuesta')
   // console.log(respuesta)

@@ -1,13 +1,11 @@
 'use client'
 
 // ** React Imports
-import { SyntheticEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
-import { styled } from '@mui/material/styles'
 import themeConfig from 'src/configs/themeConfig'
 
 // ** Third Party Styles Imports
@@ -20,28 +18,15 @@ interface Datos {
   type: string
 }
 const BorrarServicio = () => {
-  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
   const router = useRouter()
-  if (typeof window !== 'undefined') {
-    const role = localStorage.getItem('rol')
-    const isFound = acceso.some(element => {
-      if (element.rol === role) {
-        return true
-      }
-
-      return false
-    })
-    if (!isFound) {
-      return <>No autorizado</>
-    }
-  }
 
   const [respuesta, setRespuesta] = useState<Datos>({
     message: '',
     type: ''
   })
   const { id } = router.query
-  const resultados = async (id: any) => {
+
+  useEffect(() => {
     let miToken
     try {
       miToken = localStorage.getItem('token') || ''
@@ -70,10 +55,22 @@ const BorrarServicio = () => {
       .catch((error: any) => {
         console.log(error)
       })
+  }, [id, router])
+
+  const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
+  if (typeof window !== 'undefined') {
+    const role = localStorage.getItem('rol')
+    const isFound = acceso.some(element => {
+      if (element.rol === role) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
   }
-  useEffect(() => {
-    resultados(id)
-  }, [id])
 
   //console.log(respuesta)
   const resp = Object.entries(respuesta)
