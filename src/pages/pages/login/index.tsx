@@ -90,9 +90,13 @@ const LoginPage = () => {
         console.log(data)
         setStatus(200)
         setSessionn(data.data)
-        localStorage.setItem('token', data.data.token)
-        localStorage.setItem('rol', data.data.rol)
-        router.push('/')
+        if (data.data.token !== 'no hay usuario') {
+          localStorage.setItem('token', data.data.token)
+          localStorage.setItem('rol', data.data.rol)
+          router.push('/')
+        } else {
+          alert('Error al ingresar')
+        }
       })
       .catch(error => {
         setStatus(403)
@@ -163,6 +167,7 @@ const LoginPage = () => {
                 }
               />
             </FormControl>
+
             <Box
               sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             ></Box>
