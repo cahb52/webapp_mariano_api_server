@@ -164,7 +164,6 @@ const ActualizarServicio = () => {
                     id='primer_apellido'
                     name='primer_apellido'
                     label='Primer Apellido'
-                    placeholder='Primer Apellido'
                     value={respuesta.primer_apellido}
                     onChange={handleChange('primer_apellido')}
                   />
@@ -177,7 +176,6 @@ const ActualizarServicio = () => {
                     id='segundo_apellido'
                     name='segundo_apellido'
                     label='Segundo Apellido'
-                    placeholder='Segundo Apellido'
                     value={respuesta.segundo_apellido}
                     onChange={handleChange('segundo_apellido')}
                   />
@@ -190,7 +188,6 @@ const ActualizarServicio = () => {
                     id='primer_nombre'
                     name='primer_nombre'
                     label='Primer Nombre'
-                    placeholder='Primer Nombre'
                     value={respuesta.primer_nombre}
                     onChange={handleChange('primer_nombre')}
                   />
@@ -203,7 +200,6 @@ const ActualizarServicio = () => {
                     id='segundo_nombre'
                     name='segundo_nombre'
                     label='Segundo Nombre'
-                    placeholder='Segundo Nombre'
                     value={respuesta.segundo_nombre}
                     onChange={handleChange('segundo_nombre')}
                   />
@@ -215,7 +211,6 @@ const ActualizarServicio = () => {
                     type='text'
                     id='cui'
                     name='cui'
-                    placeholder='CUI/DPI'
                     label='CUI/DPI'
                     value={respuesta.cui}
                     onChange={handleChange('cui')}
@@ -225,10 +220,9 @@ const ActualizarServicio = () => {
                 <Grid item xs={12} sx={{ marginBottom: 4.8 }}>
                   <TextField
                     fullWidth
-                    type='text'
+                    type='date'
                     id='fecha_nacimiento'
                     name='fecha_nacimiento'
-                    placeholder='Fecha de Nacimiento'
                     label='Fecha de nacimiento'
                     value={respuesta.fecha_nacimiento}
                     onChange={handleChange('fecha_nacimiento')}
@@ -241,7 +235,6 @@ const ActualizarServicio = () => {
                     type='text'
                     id='direccion'
                     name='direccion'
-                    placeholder='Dirección'
                     label='Dirección'
                     value={respuesta.direccion}
                     onChange={handleChange('direccion')}
@@ -254,7 +247,6 @@ const ActualizarServicio = () => {
                     type='text'
                     id='telefono'
                     name='telefono'
-                    placeholder='telefono'
                     label='Teléfono'
                     value={respuesta.telefono}
                     onChange={handleChange('telefono')}
