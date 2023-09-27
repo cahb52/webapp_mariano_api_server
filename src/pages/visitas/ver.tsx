@@ -9,8 +9,7 @@ import themeConfig from 'src/configs/themeConfig'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
-import verificarRol from '../../verification/verificarrol'
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Box, Button, Link } from '@mui/material'
+import { TableContainer, TableHead, TableRow, TableCell, TableBody, Box, Link } from '@mui/material'
 import axios from 'axios'
 
 interface Datos {
@@ -43,23 +42,12 @@ interface Datos {
   }
 }
 
-const verUsuario = () => {
+const VerVisita = () => {
+  const router = useRouter()
+  const { id } = router.query
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
-  const router = useRouter()
-  if (typeof window !== 'undefined') {
-    const role = localStorage.getItem('rol')
-    const isFound = acceso.some(element => {
-      if (element.rol === role) {
-        return true
-      }
-
-      return false
-    })
-    if (!isFound) {
-      return <>No autorizado</>
-    }
-  }
+  const [mirol, setMiRol] = useState('ningino')
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [estado, setEstado] = useState(false)
@@ -93,10 +81,10 @@ const verUsuario = () => {
     }
   })
 
-  const { id } = router.query
-
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
+    const role = localStorage.getItem('rol') || 'ninguno'
+    setMiRol(role)
     let miToken
     try {
       miToken = localStorage.getItem('token') || ''
@@ -113,9 +101,11 @@ const verUsuario = () => {
     axios
       .request(config)
       .then((response: any) => {
-        setRespuesta(response.data)
-        setEstado(true)
-        console.log(response.data)
+        if (response.data.message != 'error') {
+          setRespuesta(response.data)
+          setEstado(true)
+          console.log(response)
+        }
 
         // console.log('soy el rspu')
         // console.log(respu)
@@ -125,8 +115,22 @@ const verUsuario = () => {
         setEstado(false)
       })
   }, [id])
+
+  if (typeof window !== null) {
+    const isFound = acceso.some(element => {
+      if (element.rol === mirol) {
+        return true
+      }
+
+      return false
+    })
+    if (!isFound) {
+      return <>No autorizado</>
+    }
+  }
+
   console.log(respuesta)
-  if (estado) {
+  if (estado || respuesta !== null) {
     return (
       <Box>
         <TableContainer>
@@ -187,7 +191,7 @@ const verUsuario = () => {
     )
   }
 
-  return <h1>Cargando</h1>
+  return <h1>Cargando...</h1>
 }
 
-export default verUsuario
+export default VerVisita

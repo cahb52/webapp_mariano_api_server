@@ -18,7 +18,8 @@ import {
   TextField,
   Select,
   MenuItem,
-  Typography
+  Typography,
+  InputLabel
 } from '@mui/material'
 import Close from 'mdi-material-ui/Close'
 import axios from 'axios'
@@ -56,14 +57,18 @@ interface DatosPersonal {
   primer_nombre: string
   segundo_nombre: string
 }
-const crearVisita = () => {
+const CrearVisita = () => {
+  //creamos todos los estados para verificar que las respuestas de datos de los menus selectivos sean cargados
   const [statusPersonal, setStatusPersonal] = useState(false)
   const [statusClientel, setStatusCliente] = useState(false)
   const [statusServicio, setStatusServicio] = useState(false)
   const [openAlert, setOpenAlert] = useState<boolean>(false)
-  const [idRespuesta, setIdRespuesta] = useState(0)
+
+  //mostramos el mensaje para cuando se crea un registro
   const [mensaje, setMensaje] = useState('Dato Guardado')
-  const [datosPersonal, setDatosPersonal] = useState({
+
+  //creamos los states vacios para esperar las respuestas de los selectivos
+  const [datosPersonal, setDatosPersonal] = useState<DatosPersonal>({
     id_personal: '',
     primer_apellido: '',
     segundo_apellido: '',
@@ -94,6 +99,8 @@ const crearVisita = () => {
     primer_nombre: '',
     segundo_nombre: ''
   })
+
+  //cargamos los datos a los respectivos objetos
 
   useEffect(() => {
     let miToken
@@ -204,7 +211,6 @@ const crearVisita = () => {
         }
       )
       .then(data => {
-        setIdRespuesta(data.data.id_visita)
         setOpenAlert(!openAlert)
         setMensaje('Dato Guardado')
 
@@ -292,18 +298,19 @@ const crearVisita = () => {
                     </Select>
                   </Grid>
                   <Grid item xs={12} sx={{ marginBottom: 4.8 }}>
+                    <InputLabel>Fecha</InputLabel>
                     <TextField
                       fullWidth
                       type='date'
                       id='fecha'
                       name='fecha'
-                      label='Fecha'
                       value={respuesta.fecha}
                       onChange={handleChange('fecha')}
                     />
                     {console.log(respuesta.fecha)}
                   </Grid>
                   <Grid item xs={12} sx={{ marginBottom: 4.8 }}>
+                    <Typography sx={{ mr: 2 }}>Hora</Typography>
                     <TextField
                       fullWidth
                       type='time'
@@ -316,9 +323,11 @@ const crearVisita = () => {
                   </Grid>
 
                   <Grid item xs={12} sx={{ marginBottom: 4.8 }}>
+                    <Typography sx={{ mr: 2 }}>Estado</Typography>
                     <Select
                       id='id'
                       label='estado'
+                      //la creación manual de esta variable genera ese error
                       onChange={e => setRequest({ ...respuesta, ['estado']: e.target.value || '' })}
                     >
                       {console.log(respuesta)}
@@ -331,13 +340,13 @@ const crearVisita = () => {
                   </Grid>
 
                   <Grid item xs={12} sx={{ marginBottom: 4.8 }}>
+                    <Typography sx={{ mr: 2 }}>Observaciones</Typography>
                     <TextField
                       fullWidth
                       type='text'
                       id='observaciones'
                       name='observaciones'
                       label='Observaciones'
-                      placeholder='Observaciones'
                       value={respuesta.observaciones}
                       onChange={handleChange('observaciones')}
                     />
@@ -386,4 +395,4 @@ const crearVisita = () => {
   return <h1>Cargando...</h1>
 }
 
-module.exports = crearVisita
+module.exports = CrearVisita
