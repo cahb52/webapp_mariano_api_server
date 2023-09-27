@@ -1,5 +1,5 @@
 // ** React Imports
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { useRouter } from 'next/router'
 
 // ** MUI Imports
@@ -8,7 +8,6 @@ import Card from '@mui/material/Card'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
-import verificarRol from '../../verification/verificarrol'
 import { Alert, AlertTitle, Button, CardContent, Grid, IconButton, TextField } from '@mui/material'
 import Close from 'mdi-material-ui/Close'
 import axios from 'axios'
@@ -63,6 +62,8 @@ const ActualizarServicio = () => {
   const handleChange = (prop: keyof Datos) => (event: ChangeEvent<HTMLInputElement>) => {
     setRequest({ ...respuesta, [prop]: event.target.value })
   }
+
+  const { id } = router.query
   const guardarDatos = async (e: MouseEvent) => {
     e.preventDefault()
     let miToken = ''
@@ -81,7 +82,7 @@ const ActualizarServicio = () => {
         fecha_nacimiento: respuesta.fecha_nacimiento,
         direccion: respuesta.direccion,
         telefono: respuesta.telefono,
-        id_users: respuesta.id_users
+        id_users: id
       },
       {
         headers: {
@@ -101,11 +102,6 @@ const ActualizarServicio = () => {
       setMensaje('Dato no pudo guardarse')
     }
   }
-
-  const { id } = router.query
-  useEffect(() => {
-    setRequest({ ...respuesta, ['id_users']: id })
-  }, [id])
 
   return (
     <Box>

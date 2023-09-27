@@ -1,5 +1,5 @@
 // ** React Imports
-import { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 // ** MUI Imports
@@ -16,7 +16,6 @@ import {
   Grid,
   IconButton,
   TextField,
-  Select,
   MenuItem,
   Typography,
   InputLabel
@@ -25,6 +24,7 @@ import Close from 'mdi-material-ui/Close'
 import axios from 'axios'
 import themeConfig from 'src/configs/themeConfig'
 import 'react-datepicker/dist/react-datepicker.css'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
 
 interface ServiciosD {
   id_servicio: string
@@ -181,9 +181,11 @@ const CrearVisita = () => {
       return <>No autorizado</>
     }
   }
-  const handleChange = (prop: keyof Datos) => (event: ChangeEvent<HTMLInputElement>) => {
-    setRequest({ ...respuesta, [prop]: event.target.value })
-  }
+
+  // const handleChange = (prop: keyof Datos) => (event: ChangeEvent<HTMLInputElement>) => {
+  //   setRequest({ ...respuesta, [prop]: event.target.value })
+  // }
+
   const guardarDatos = async (e: MouseEvent) => {
     e.preventDefault()
     let miToken = ''
@@ -248,7 +250,7 @@ const CrearVisita = () => {
                     <Select
                       id='id_cliente'
                       label='id_cliente'
-                      onChange={e => setRequest({ ...respuesta, ['id_cliente']: e.target.value || '' })}
+                      onChange={e => setRequest({ ...respuesta, ['id_cliente']: e.target.value as string })}
                     >
                       {listaClientes?.map((row, id) => (
                         <MenuItem key={id} value={row.id_cliente}>
@@ -268,7 +270,7 @@ const CrearVisita = () => {
                     <Select
                       id='id_servicio'
                       label='id_servicio'
-                      onChange={e => setRequest({ ...respuesta, ['id_servicio']: e.target.value || '' })}
+                      onChange={e => setRequest({ ...respuesta, ['id_servicio']: e.target.value as string })}
                     >
                       {listaServicios?.map((row, id) => (
                         <MenuItem key={id} value={row.id_servicio}>
@@ -282,7 +284,7 @@ const CrearVisita = () => {
                     <Select
                       id='id_personal'
                       label='id_personal'
-                      onChange={e => setRequest({ ...respuesta, ['id_personal']: e.target.value || '' })}
+                      onChange={e => setRequest({ ...respuesta, ['id_personal']: e.target.value as string })}
                     >
                       {listaPersonal?.map((row, id) => (
                         <MenuItem key={id} value={row.id_personal}>
@@ -305,7 +307,7 @@ const CrearVisita = () => {
                       id='fecha'
                       name='fecha'
                       value={respuesta.fecha}
-                      onChange={handleChange('fecha')}
+                      onChange={e => setRequest({ ...respuesta, ['fecha']: e.target.value as string })}
                     />
                     {console.log(respuesta.fecha)}
                   </Grid>
@@ -318,7 +320,7 @@ const CrearVisita = () => {
                       name='hora_visita'
                       label='Hora Visita'
                       value={respuesta.hora_visita}
-                      onChange={handleChange('hora_visita')}
+                      onChange={e => setRequest({ ...respuesta, ['hora_visita']: e.target.value as string })}
                     />
                   </Grid>
 
@@ -327,8 +329,7 @@ const CrearVisita = () => {
                     <Select
                       id='id'
                       label='estado'
-                      //la creación manual de esta variable genera ese error
-                      onChange={e => setRequest({ ...respuesta, ['estado']: e.target.value || '' })}
+                      onChange={e => setRequest({ ...respuesta, ['estado']: e.target.value as string })}
                     >
                       {console.log(respuesta)}
                       {estados.map((row, id) => (
@@ -348,7 +349,7 @@ const CrearVisita = () => {
                       name='observaciones'
                       label='Observaciones'
                       value={respuesta.observaciones}
-                      onChange={handleChange('observaciones')}
+                      onChange={e => setRequest({ ...respuesta, ['observaciones']: e.target.value as string })}
                     />
                   </Grid>
 

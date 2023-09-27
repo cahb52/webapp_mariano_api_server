@@ -18,8 +18,8 @@ type ThemeConfig = {
 type Sessiones = {
   token: string
 }
-let  Sessiones: Sessiones = {
-  token : ""
+const Sessiones: Sessiones = {
+  token: ''
 }
 const themeConfig: ThemeConfig = {
   // ** Layout Configs
@@ -37,8 +37,7 @@ const themeConfig: ThemeConfig = {
   // ** Other Configs
   responsiveFontSizes: true /* true | false */,
   disableRipple: false /* true | false */,
-  serverApi: 'http://localhost:3000'
-
+  serverApi: 'http://144.126.141.15:3000'
 }
 
 export default themeConfig

@@ -94,32 +94,6 @@ const CrearVisita = () => {
   const [openAlert, setOpenAlert] = useState<boolean>(false)
   const [error, setError] = useState(false)
   const [state, setState] = useState('')
-  const [respuestaConsulta, setRespuestaConsulta] = useState<DatosConsulta>({
-    id_visita: '',
-    id_cliente: '',
-    id_servicio: '',
-    id_personal: '',
-    fecha: '',
-    hora_visita: '',
-    estado: '',
-    observaciones: '',
-    personal: {
-      primer_apellido: '',
-      segundo_apellido: '',
-      primer_nombre: '',
-      segundo_nombre: ''
-    },
-    servicio: {
-      tipo_servicio: '',
-      descripcion: ''
-    },
-    cliente: {
-      primer_apellido: '',
-      segundo_apellido: '',
-      primer_nombre: '',
-      segundo_nombre: ''
-    }
-  })
 
   //mostramos el mensaje para cuando se crea un registro
   const [mensaje, setMensaje] = useState('Dato Guardado')
@@ -262,6 +236,7 @@ const CrearVisita = () => {
   const handleChange = (prop: keyof Datos) => (event: ChangeEvent<HTMLInputElement>) => {
     setRequest({ ...respuesta, [prop]: event.target.value })
   }
+
   const guardarDatos = async (e: MouseEvent) => {
     e.preventDefault()
     let miToken = ''
@@ -328,11 +303,7 @@ const CrearVisita = () => {
                     onChange={e => setRequest({ ...respuesta, ['id_cliente']: e.target.value || '' })}
                   >
                     {listaClientes?.map((row, id) => (
-                      <MenuItem
-                        key={id}
-                        value={row.id_cliente}
-                        onChange={e => setRequest({ ...respuesta, ['id_cliente']: e.target.value || '' })}
-                      >
+                      <MenuItem key={id} value={row.id_cliente}>
                         {row.primer_nombre +
                           ' ' +
                           row.segundo_nombre +
@@ -410,7 +381,6 @@ const CrearVisita = () => {
                     id='id'
                     label='estado'
                     value={respuesta.estado}
-                    //la creación manual de esta variable genera ese error
                     onChange={e => setRequest({ ...respuesta, ['estado']: e.target.value || '' })}
                   >
                     {console.log(respuesta)}

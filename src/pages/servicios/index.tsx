@@ -101,8 +101,8 @@ const ServiciosSettings = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map(row => (
-                <TableRow key={row.name} sx={{ '&:last-of-type  td, &:last-of-type  th': { border: 0 } }}>
+              {rows.map((row, id) => (
+                <TableRow key={id} sx={{ '&:last-of-type  td, &:last-of-type  th': { border: 0 } }}>
                   <TableCell component='th' scope='row'>
                     <Link href={'/servicios/ver?id=' + row.id_servicio} underline='none'>
                       {row.id_servicio}
