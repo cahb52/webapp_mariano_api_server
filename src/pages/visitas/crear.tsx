@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 // ** MUI Imports
@@ -24,7 +24,7 @@ import Close from 'mdi-material-ui/Close'
 import axios from 'axios'
 import themeConfig from 'src/configs/themeConfig'
 import 'react-datepicker/dist/react-datepicker.css'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import Select from '@mui/material/Select'
 
 interface ServiciosD {
   id_servicio: string

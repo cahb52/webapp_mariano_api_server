@@ -41,11 +41,6 @@ interface State {
   showPassword: boolean
   username: string
 }
-interface sessionlogin {
-  token: string
-  ok: boolean
-  rol: string
-}
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
@@ -110,6 +105,8 @@ const LoginPage = () => {
       return <>Ya esta logueado, por favor cierre la sesión e ingrese de nuevo</>
     }
   }
+  console.log(estatus)
+  console.log(sessionn)
 
   return (
     <Box className='content-center'>

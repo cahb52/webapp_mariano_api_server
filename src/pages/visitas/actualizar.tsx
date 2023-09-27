@@ -3,7 +3,6 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 // ** MUI Imports
-import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 
 // ** Third Party Styles Imports
@@ -25,33 +24,6 @@ import Close from 'mdi-material-ui/Close'
 import axios from 'axios'
 import themeConfig from 'src/configs/themeConfig'
 import 'react-datepicker/dist/react-datepicker.css'
-
-interface DatosConsulta {
-  id_visita: string
-  id_cliente: string
-  id_servicio: string
-  id_personal: string
-  fecha: string
-  hora_visita: string
-  estado: string
-  observaciones: string
-  personal: {
-    primer_apellido: string
-    segundo_apellido: string
-    primer_nombre: string
-    segundo_nombre: string
-  }
-  cliente: {
-    primer_apellido: string
-    segundo_apellido: string
-    primer_nombre: string
-    segundo_nombre: string
-  }
-  servicio: {
-    tipo_servicio: string
-    descripcion: string
-  }
-}
 
 interface ServiciosD {
   id_servicio: string
@@ -287,6 +259,9 @@ const CrearVisita = () => {
     const listaClientes = Object.values(respuestaCliente)
     const listaServicios = Object.values(respuestaServicios)
     const listaPersonal = Object.values(datosPersonal)
+
+    console.log(error)
+    console.log(state)
 
     return (
       <Card>

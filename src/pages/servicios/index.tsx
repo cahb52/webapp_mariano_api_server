@@ -19,7 +19,7 @@ import {
   Button
 } from '@mui/material'
 import Paper from '@mui/material/Paper'
-import verificarRol from 'src/verification/verificarrol'
+
 import { useRouter } from 'next/router'
 import themeConfig from 'src/configs/themeConfig'
 import axios from 'axios'

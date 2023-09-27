@@ -18,7 +18,7 @@ import {
   Grid,
   Button
 } from '@mui/material'
-import verificarRol from 'src/verification/verificarrol'
+
 import themeConfig from 'src/configs/themeConfig'
 import axios from 'axios'
 import { Delete, Update } from 'mdi-material-ui'

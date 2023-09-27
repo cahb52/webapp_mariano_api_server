@@ -8,7 +8,6 @@ import Card from '@mui/material/Card'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
-import verificarRol from '../../verification/verificarrol'
 import { Alert, AlertTitle, Button, CardContent, Grid, IconButton, TextField } from '@mui/material'
 import Close from 'mdi-material-ui/Close'
 import axios from 'axios'

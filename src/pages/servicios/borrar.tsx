@@ -19,7 +19,7 @@ interface Datos {
   message: string
   type: string
 }
-const verServicio = () => {
+const BorrarServicio = () => {
   const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }]
   const router = useRouter()
   if (typeof window !== 'undefined') {
@@ -82,4 +82,4 @@ const verServicio = () => {
   return <Box>{respuesta.type}</Box>
 }
 
-export default verServicio
+export default BorrarServicio

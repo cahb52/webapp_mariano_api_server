@@ -24,7 +24,7 @@ interface Datos {
     rol: string
   }
 }
-const verUsuario = () => {
+const VerUsuario = () => {
   const [respuestaDatos, setRespuesta] = useState<Datos>({
     id_users: '',
     id_rol: '',
@@ -122,4 +122,4 @@ const verUsuario = () => {
   )
 }
 
-export default verUsuario
+export default VerUsuario

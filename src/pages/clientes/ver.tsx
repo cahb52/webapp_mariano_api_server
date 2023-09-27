@@ -9,7 +9,7 @@ import themeConfig from 'src/configs/themeConfig'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
-import verificarRol from '../../verification/verificarrol'
+
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Box } from '@mui/material'
 import axios from 'axios'
 
@@ -27,7 +27,7 @@ interface Datos {
   latitud: string
   longitud: string
 }
-const verUsuario = () => {
+const VerCliente = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   //determinamos los permisos de acceso
   const acceso = [{ rol: 'admin' }, { rol: 'supervisor' }, { rol: 'tecnico' }]
@@ -148,4 +148,4 @@ const verUsuario = () => {
   )
 }
 
-export default verUsuario
+export default VerCliente
